@@ -20,6 +20,7 @@ class UserRole
      *
      * @param Request $request
      * @param Closure $next (\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @param string $request_role
      * @return Response|RedirectResponse
      * @throws Exception
      */
