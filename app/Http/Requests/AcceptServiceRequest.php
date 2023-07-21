@@ -15,7 +15,9 @@ class AcceptServiceRequest extends FormRequest
     public function rules()
     {
         return [
-            'service_request_id' => 'required|exists:service_requests,id|int'
+            'service_request_id' => 'required|exists:service_requests,id|int',
+            'longitude' => 'required|int',
+            'latitude' => 'required|int',
         ];
     }
 }

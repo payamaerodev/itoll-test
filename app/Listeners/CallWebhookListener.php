@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Events\CallWebhookEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Http;
@@ -21,10 +22,10 @@ class CallWebhookListener implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  object  $event
+     * @param CallWebhookEvent $event
      * @return void
      */
-    public function handle($event)
+    public function handle(CallWebhookEvent $event)
     {
         Http::get($event->url,['status'=>$event->status] );
     }

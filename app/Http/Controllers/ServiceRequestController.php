@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enum\Status;
+use App\Events\CallWebhookEvent;
 use App\Http\Requests\AcceptServiceRequest;
 use App\Http\Requests\AddServiceRequestRequest;
 use App\Http\service\RequestService;
@@ -39,6 +40,7 @@ class ServiceRequestController extends Controller
      */
     public function postAcceptByCourier(AcceptServiceRequest $request)
     {
+        CallWebhookEvent::dispatch($request->longitude, $request->latitude, $request->status);
         $this->service->acceptRequest($request->input('service_request_id'), Status::TAKEN);
     }
 
@@ -48,13 +50,13 @@ class ServiceRequestController extends Controller
      */
     public function getServicesRequests(AcceptServiceRequest $request): JsonResponse
     {
-        try{
+        try {
             return response()->json([
                 'data' => $this->service->getAllRequests()
             ]);
-        }catch (\Exception){
+        } catch (\Exception) {
             return response()->json([
-                'message'=>'you can not request for a service right now. please try again!'
+                'message' => 'you can not request for a service right now. please try again!'
             ]);
         }
 

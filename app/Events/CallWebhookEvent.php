@@ -15,14 +15,22 @@ class CallWebhookEvent implements ShouldQueue
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public string $longitude;
+    public string $latitude;
+    public string $status;
+
     /**
      * Create a new event instance.
      *
-     * @return void
+     * @param int $longitude
+     * @param int $latitude
+     * @param string $status
      */
-    public function __construct()
+    public function __construct(int $longitude, int $latitude, string $status)
     {
-        //
+        $this->longitude = $longitude;
+        $this->latitude = $latitude;
+        $this->status = $status;
     }
 
     /**
