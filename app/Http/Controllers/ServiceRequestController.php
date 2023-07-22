@@ -62,10 +62,9 @@ class ServiceRequestController extends Controller
     }
 
     /**
-     * @param AcceptServiceRequest $request
      * @return JsonResponse
      */
-    public function getServicesRequests(AcceptServiceRequest $request): JsonResponse
+    public function getServicesRequests(): JsonResponse
     {
         try {
             return response()->json([

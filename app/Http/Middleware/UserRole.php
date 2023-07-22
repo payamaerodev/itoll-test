@@ -29,10 +29,10 @@ class UserRole
             $token_id = trim(explode('|', explode('Bearer', $request->header('Authorization'))[1])[0]);
             $token = PersonalAccessToken::query()->where('id', $token_id)->firstOrFail();
             $user = User::query()->where('id', $token->tokenable_id)->firstOrFail();
-            $role_id = $user->value('role_id');
+            $role_id = $user->role_id;
             $role = Role::query()->where('id', $role_id)->firstOrFail();
             $compared_role = strtolower($request_role) === 'courier' ? \App\Enum\Role::COURIER : \App\Enum\Role::SET;
-            throw_if(!$role->role_name === $compared_role, Exception::class);
+            throw_if($role->role_name !== $compared_role, Exception::class);
         } catch (Throwable | Exception) {
             throw new Exception("invalid user role!");
         }
