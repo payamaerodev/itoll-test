@@ -23,6 +23,7 @@ class ServiceRequest extends Model
         'source_latitude',
         'source_address',
         'destination_address',
+        'webhook_url',
     ];
 
     public function couriers(): BelongsTo

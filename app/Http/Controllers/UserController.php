@@ -12,5 +12,4 @@ class UserController extends Controller
             'message'=>'your token is invalid!'
         ]);
     }
-    //
 }

@@ -40,7 +40,7 @@ class ServiceRequestController extends Controller
      */
     public function postAcceptByCourier(AcceptServiceRequest $request)
     {
-        CallWebhookEvent::dispatch($request->longitude, $request->latitude, $request->status);
+        CallWebhookEvent::dispatch($request->input('longitude'), $request->input('latitude'), Status::TAKEN);
         $this->service->acceptRequest($request->input('service_request_id'), Status::TAKEN);
     }
 
@@ -82,9 +82,16 @@ class ServiceRequestController extends Controller
         }
     }
 
-    public function issueToken()
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function issueToken(Request $request): mixed
     {
-        $user = User::query()->where('id', 1)->first();
+        $user = User::query()->where([
+            'email' => $request->email,
+            'name' => $request->name
+        ])->first();
         return $user->createToken('courier');
     }
 }

@@ -6,6 +6,9 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class AcceptServiceRequest extends FormRequest
 {
+    public mixed $longitude;
+    public mixed $latitude;
+    public mixed $status;
 
     /**
      * Get the validation rules that apply to the request.

@@ -15,9 +15,9 @@ return new class extends Migration {
         Schema::create('service_requests', function (Blueprint $table) {
             $table->id();
             $table->string('status');
-            $table->integer('user_id');
-            $table->tinyInteger('destination_longitude');
-            $table->tinyInteger('destination_latitude');
+            $table->unsignedBigInteger('user_id');
+            $table->smallInteger('destination_longitude');
+            $table->smallInteger('destination_latitude');
             $table->string('sender_name');
             $table->string('receiver_name');
             $table->string('receiver_number');
@@ -26,6 +26,7 @@ return new class extends Migration {
             $table->tinyInteger('source_latitude');
             $table->string('source_address');
             $table->string('destination_address');
+            $table->string('webhook_url');
             $table->timestamps();
 
             $table->foreign('user_id')->on('users')

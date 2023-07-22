@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Enum\Status;
 use App\Models\ServiceRequest;
 use Exception;
-use Faker\Guesser\Name;
-use Faker\Provider\fa_IR\Address;
 use Illuminate\Database\Seeder;
 
 class ServiceRequestTableSeeder extends Seeder
@@ -18,16 +17,27 @@ class ServiceRequestTableSeeder extends Seeder
      */
     public function run()
     {
-        $data = [
-            [
-                random_int(1, 9999999), array_rand(['ACCEPTED', 'CREATED']),
-                random_int(1, 2), random_int(1, 180), random_int(1, 90), Name::class,
-                Name::class, '09366363692', '09125455654', random_int(1, 180),
-                random_int(1, 90), Address::class, Address::class, now(), now(),
-            ],
-        ];
-        for ($i = 1; $i < 10; $i++) {
-            ServiceRequest::query()->create($data[$i]);
+
+        for ($i = 1; $i < 3; $i++) {
+            $input=[
+            'id'=>random_int(1,2000000000),
+            'status'=>Status::CREATED,
+            'user_id'=>random_int(1, 2),
+            'destination_longitude'=>random_int(1, 180),
+            'destination_latitude'=>random_int(1, 90),
+            'sender_name'=>fake()->name,
+            'receiver_name'=>fake()->name,
+            'receiver_number'=>'09366363692',
+            'sender_number'=>'09125455654',
+            'source_longitude'=>random_int(1, 180),
+            'source_latitude'=>random_int(1, 90),
+            'source_address'=>fake()->address,
+            'destination_address'=>fake()->address,
+            'webhook_url'=>fake()->url,
+            'created_at'=>now(),
+            'updated_at'=>now()
+            ];
+            ServiceRequest::query()->insert($input);
         }
     }
 }

@@ -1,2 +1,5 @@
-setClientToken  =========>>>>>> 4|shwplokBRuztFWIUAas2tC3flxo25oGhZ8vTb9B1
-courier         ========>>>>>>> 7|odz8IfCVbtx1gAxSaM9hieKnx1IoAXLmT61PrYMU
+
+`role`     ====>>>>>     `name`,`email`
+courier    ====>>>>>      payam,p@gmail.com
+setClient  ====>>>>>      pooria,poo@gmail.com
+

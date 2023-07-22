@@ -13,15 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/issueToken', [\App\Http\Controllers\ServiceRequestController::class, 'issueToken']);
+Route::post('/login', [\App\Http\Controllers\ServiceRequestController::class, 'issueToken'])->name('login');
 Route::prefix('/')->middleware(['auth:sanctum'])->group(function () {
     Route::prefix('/set')->group(function () {
         Route::post('/add-request', [\App\Http\Controllers\ServiceRequestController::class, 'postRequest'])->middleware('user_role:clientSet');
-        Route::post('/cancel-request', [\App\Http\Controllers\ServiceRequestController::class, 'cancelServiceRequest'])->middleware('user_role:clientSet');
+        Route::put('/cancel-request', [\App\Http\Controllers\ServiceRequestController::class, 'cancelServiceRequest'])->middleware('user_role:clientSet');
     });
     Route::prefix('/courier')->group(function () {
-        Route::post('/accept-request', [\App\Http\Controllers\ServiceRequestController::class, 'postAcceptByCourier'])->middleware('isCourier')->middleware('user_role:courier');
-        Route::get('/get-requests', [\App\Http\Controllers\ServiceRequestController::class, 'getServicesRequests'])->middleware('auth:sanctum')->middleware('user_role:courier');
+        Route::put('/accept-request', [\App\Http\Controllers\ServiceRequestController::class, 'postAcceptByCourier'])->middleware('user_role:courier');
+        Route::get('/get-requests', [\App\Http\Controllers\ServiceRequestController::class, 'getServicesRequests'])->middleware('user_role:courier');
     });
 });
-Route::get('/login', [\App\Http\Controllers\UserController::class, 'login'])->name('login');
