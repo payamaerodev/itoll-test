@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Throwable;
 
 class RequestService
@@ -35,11 +36,11 @@ class RequestService
 
     /**
      * @param array $data
-     * @return Builder|Model
+     * @return Model|Builder
      */
-    public function addRequest(array $data): Builder|Model
+    public function addRequest(array $data): Model|Builder
     {
-        return $this->repository->addServiceRequest($data);
+        return $this->repository->addServiceRequest(array_merge($data, ['status' => Status::CREATED, 'user_id' => Auth::id(), 'uuid' => Str::uuid()->toString()]));
     }
 
     /**

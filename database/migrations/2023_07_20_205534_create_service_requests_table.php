@@ -26,6 +26,7 @@ return new class extends Migration {
             $table->tinyInteger('source_latitude');
             $table->string('source_address');
             $table->string('destination_address');
+            $table->string('uuid');
             $table->string('webhook_url');
             $table->timestamps();
 

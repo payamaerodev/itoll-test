@@ -8,8 +8,6 @@ use App\Http\Requests\AcceptServiceRequest;
 use App\Http\Requests\AddServiceRequestRequest;
 use App\Http\service\RequestService;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -28,20 +26,33 @@ class ServiceRequestController extends Controller
 
     /**
      * @param AddServiceRequestRequest $request
-     * @return Builder|Model
+     * @return string
      */
-    public function postRequest(AddServiceRequestRequest $request): Builder|Model
+    public function postRequest(AddServiceRequestRequest $request): string
     {
-        return $this->service->addRequest($request->all());
+        try {
+            return $this->service->addRequest($request->all())->uuid;
+        } catch (\Exception) {
+            return response()->json([
+                'message' => 'service request failed!'
+            ]);
+        }
     }
 
     /**
      * @param AcceptServiceRequest $request
+     * @return JsonResponse|void
      */
     public function postAcceptByCourier(AcceptServiceRequest $request)
     {
-        CallWebhookEvent::dispatch($request->input('longitude'), $request->input('latitude'), Status::TAKEN);
-        $this->service->acceptRequest($request->input('service_request_id'), Status::TAKEN);
+        try {
+            CallWebhookEvent::dispatch($request->input('longitude'), $request->input('latitude'), Status::TAKEN);
+            $this->service->acceptRequest($request->input('service_request_id'), Status::TAKEN);
+        } catch (\Exception) {
+            return response()->json([
+                'message' => 'accept service request failed!'
+            ]);
+        }
     }
 
     /**
