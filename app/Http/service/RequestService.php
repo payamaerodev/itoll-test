@@ -29,7 +29,10 @@ class RequestService
     public function cancelServiceRequest(int $service_request_id, string $status): int
     {
         throw_if($this->repository->findById($service_request_id)->user_id !== Auth::id(), \Exception::class);
-
+        $request = $this->repository->findById($service_request_id);
+        if ($request->status === Status::CREATED) {
+            return $this->repository->updateServiceRequestStatus($service_request_id, Status::CANCELED);
+        }
         return $this->repository->updateServiceRequestStatus($service_request_id, $status);
     }
 
@@ -54,7 +57,7 @@ class RequestService
     {
         $request = $this->repository->findById($service_request_id);
         if ($request->status === Status::CREATED) {
-            return $this->repository->updateServiceRequestStatus($service_request_id, Status::CANCELED);
+            return $this->repository->updateServiceRequestStatus($service_request_id, Status::TAKEN);
         }
         return false;
     }
