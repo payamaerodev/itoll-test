@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Enum\Role;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class RoleTableSeeder extends Seeder

@@ -14,7 +14,6 @@ use Throwable;
 
 class UserRole
 {
-
     /**
      * Handle an incoming request.
      *

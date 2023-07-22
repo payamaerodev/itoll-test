@@ -10,6 +10,7 @@ use App\Http\service\RequestService;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Throwable;
 
 class ServiceRequestController extends Controller
 {
@@ -31,7 +32,9 @@ class ServiceRequestController extends Controller
     public function postRequest(AddServiceRequestRequest $request): string
     {
         try {
-            return $this->service->addRequest($request->all())->uuid;
+            return response()->json([
+                'data' => $this->service->addRequest($request->all())->uuid
+            ]);
         } catch (\Exception) {
             return response()->json([
                 'message' => 'service request failed!'
@@ -41,13 +44,16 @@ class ServiceRequestController extends Controller
 
     /**
      * @param AcceptServiceRequest $request
-     * @return JsonResponse|void
+     * @return JsonResponse
      */
-    public function postAcceptByCourier(AcceptServiceRequest $request)
+    public function postAcceptByCourier(AcceptServiceRequest $request): JsonResponse
     {
         try {
             CallWebhookEvent::dispatch($request->input('longitude'), $request->input('latitude'), Status::TAKEN);
-            $this->service->acceptRequest($request->input('service_request_id'), Status::TAKEN);
+            $status = $this->service->acceptRequest($request->input('service_request_id'));
+            return response()->json([
+                'message' => $status ? 'request accepted!' : 'accept service request failed!'
+            ]);
         } catch (\Exception) {
             return response()->json([
                 'message' => 'accept service request failed!'
@@ -86,7 +92,7 @@ class ServiceRequestController extends Controller
                     ? 'successful operation!'
                     : 'invalid request!'
             ]);
-        } catch (\Throwable $e) {
+        } catch (Throwable) {
             return response()->json([
                 'message' => 'Invalid service request!'
             ]);

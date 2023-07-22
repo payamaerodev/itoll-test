@@ -20,7 +20,7 @@ class ServiceRequestTableSeeder extends Seeder
 
         for ($i = 1; $i < 3; $i++) {
             $input=[
-            'id'=>random_int(1,2000000000),
+            'id'=>random_int(1, 2000000000),
             'status'=>Status::CREATED,
             'user_id'=>random_int(1, 2),
             'destination_longitude'=>random_int(1, 180),

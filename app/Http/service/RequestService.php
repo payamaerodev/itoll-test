@@ -3,7 +3,6 @@
 namespace App\Http\service;
 
 use App\Enum\Status;
-use App\Http\service\ServiceRequestRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -51,11 +50,12 @@ class RequestService
         return $this->repository->getAllServiceRequests();
     }
 
-    public function acceptRequest(mixed $service_request_id, string $TAKEN)
+    public function acceptRequest(mixed $service_request_id): bool|int
     {
         $request = $this->repository->findById($service_request_id);
         if ($request->status === Status::CREATED) {
-            $this->repository->updateServiceRequestStatus($service_request_id, Status::CANCELED);
+            return $this->repository->updateServiceRequestStatus($service_request_id, Status::CANCELED);
         }
+        return false;
     }
 }
