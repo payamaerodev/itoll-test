@@ -18,16 +18,19 @@ class CallWebhookEvent implements ShouldQueue
     public string $longitude;
     public string $latitude;
     public string $status;
+    public string $url;
 
     /**
      * Create a new event instance.
      *
+     * @param string $webhook_url
      * @param int $longitude
      * @param int $latitude
      * @param string $status
      */
-    public function __construct(int $longitude, int $latitude, string $status)
+    public function __construct(string $webhook_url, int $longitude, int $latitude, string $status)
     {
+        $this->url = $webhook_url;
         $this->longitude = $longitude;
         $this->latitude = $latitude;
         $this->status = $status;

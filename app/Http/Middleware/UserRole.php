@@ -23,7 +23,7 @@ class UserRole
      * @return Response|RedirectResponse
      * @throws Exception
      */
-    public function handle(Request $request, Closure $next,string $request_role)
+    public function handle(Request $request, Closure $next, string $request_role)
     {
         try {
             $token_id = trim(explode('|', explode('Bearer', $request->header('Authorization'))[1])[0]);

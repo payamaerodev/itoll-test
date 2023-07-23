@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Enum\Status;
-use App\Events\CallWebhookEvent;
 use App\Http\Requests\AcceptServiceRequest;
 use App\Http\Requests\AddServiceRequestRequest;
 use App\Http\service\RequestService;
@@ -49,10 +48,11 @@ class ServiceRequestController extends Controller
     public function postAcceptByCourier(AcceptServiceRequest $request): JsonResponse
     {
         try {
-            CallWebhookEvent::dispatch($request->input('longitude'), $request->input('latitude'), Status::TAKEN);
-            $status = $this->service->acceptRequest($request->input('service_request_id'));
+            $status = $this->service->acceptRequest($request->input('service_request_id'), $request->input('longitude'), $request->input('latitude'));
             return response()->json([
-                'message' => $status ? 'request accepted!' : 'accept service request failed!'
+                'message' => $status
+                    ? 'request accepted!'
+                    : 'accept service request failed!'
             ]);
         } catch (\Exception) {
             return response()->json([
@@ -86,8 +86,10 @@ class ServiceRequestController extends Controller
     {
         try {
             return response()->json([
-                'message' => $this->service->cancelServiceRequest($request->input('service_request_id'),
-                    Status::CANCELED)
+                'message' => $this->service->cancelServiceRequest(
+                    $request->input('service_request_id'),
+                    Status::CANCELED
+                )
                     ? 'successful operation!'
                     : 'invalid request!'
             ]);

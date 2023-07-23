@@ -9,23 +9,17 @@ use Illuminate\Support\Facades\Http;
 class CallWebhookListener implements ShouldQueue
 {
     /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Handle the event.
      *
      * @param CallWebhookEvent $event
      * @return void
      */
-    public function handle(CallWebhookEvent $event)
+    public function handle(CallWebhookEvent $event): void
     {
-        Http::get($event->url, ['status'=>$event->status]);
+        Http::get($event->url, [
+            'longitude' => $event->longitude,
+            'latitude' => $event->latitude,
+            'status' => $event->status
+        ]);
     }
 }

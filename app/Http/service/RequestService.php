@@ -3,6 +3,8 @@
 namespace App\Http\service;
 
 use App\Enum\Status;
+use App\Events\CallWebhookEvent;
+use App\Models\ServiceRequest;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -53,8 +55,16 @@ class RequestService
         return $this->repository->getAllServiceRequests();
     }
 
-    public function acceptRequest(mixed $service_request_id): bool|int
+    /**
+     * @param mixed $service_request_id
+     * @param int $longitude
+     * @param int $latitude
+     * @return bool|int
+     */
+    public function acceptRequest(mixed $service_request_id, int $longitude, int $latitude): bool|int
     {
+        $service_request = ServiceRequest::query()->where('id', $service_request_id)->first();
+        CallWebhookEvent::dispatch($service_request->webhook_url, $longitude, $latitude, Status::TAKEN);
         $request = $this->repository->findById($service_request_id);
         if ($request->status === Status::CREATED) {
             return $this->repository->updateServiceRequestStatus($service_request_id, Status::TAKEN);
